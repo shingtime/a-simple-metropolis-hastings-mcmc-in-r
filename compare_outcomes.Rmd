@@ -1,0 +1,51 @@
+---
+title: "hw3"
+author: "Junxiao Bu"
+date: "October 18, 2015"
+output: pdf_document
+---
+
+## part 1: generate true models and observed y
+
+
+```{r}
+source('all_functions_source.r')
+## generate the true model's slope
+trueA <- 5
+## generate the true model's intercept
+trueB <- 0
+## generate the true model's error term's standard deviation
+trueSd <- 10
+## generate the number of observations
+sampleSize <- 31
+# create independent x-values 
+## generate x from -15 to 15
+x <- (-(sampleSize-1)/2):((sampleSize-1)/2)
+# create dependent values according to ax + b + N(0,sd)
+## generate the true response variable for the linear relation
+y <-  trueA * x + trueB + rnorm(n=sampleSize,mean=0,sd=trueSd)
+## draw the scatter plot of relation between x and y
+plot(x,y, main="Test Data")
+```
+
+## part 2:Example: plot the likelihood profile of the slope. when changing slope, the sum of log likelihood value changes
+
+```{r}
+slopevalues <- function(x){return(likelihood(c(x, trueB, trueSd)))}
+## vectorized caculating the log likelihood value for y when changing slope from 3 to 7 by 0.5.
+slopelikelihoods <- lapply(seq(3, 7, by=.05), slopevalues )
+plot (seq(3, 7, by=.05), slopelikelihoods , type="l", xlab = "values of slope parameter a", ylab = "Log likelihood")
+```
+
+## part 3: Implement Metropolis algorithm to find a with different iteration times
+
+```{r}
+
+## test cases
+compare_outcomes(1000)
+compare_outcomes(10000)
+compare_outcomes(100000)
+
+```
+
+
